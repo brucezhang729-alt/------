@@ -74,3 +74,64 @@ public:
         return dfs(root);
     }
 };
+
+https://leetcode.cn/problems/sum-root-to-leaf-numbers/description/  // 求根节点到叶节点数字之和
+
+class Solution {
+public:
+    int dfs(TreeNode*root,int presum)
+    {
+        presum = presum*10+root->val;
+        if(root->left==nullptr&&root->right==nullptr)
+        {
+            return presum;
+        }
+        int ret = 0;
+        if(root->left) ret+=dfs(root->left,presum);
+        if(root->right) ret+=dfs(root->right,presum);
+        return ret;
+    }
+    int sumNumbers(TreeNode* root) {
+        return dfs(root,0);
+    }
+};
+
+https://leetcode.cn/problems/binary-tree-right-side-view/description/ //  二叉树右视图
+
+class Solution {
+public:
+    vector<int> ret;
+    vector<int> rightSideView(TreeNode* root) {
+        dfs(root,0);
+        return ret;
+    }
+    void dfs(TreeNode*root,int depth)
+    {
+        if(root==nullptr) return;
+        if(ret.size()==depth) ret.push_back(root->val);
+        dfs(root->right,depth+1);
+        dfs(root->left,depth+1);
+    }
+};
+
+
+https://leetcode.cn/problems/count-good-nodes-in-binary-tree/description/  //  统计二叉树中的好节点
+
+class Solution {
+public:
+    int dfs(TreeNode*root,int Pathmax_)
+    {
+        if(root==nullptr) return 0;
+        int ret = 0;
+        if(root->val>=Pathmax_)
+        {
+            ret++;
+            Pathmax_ = root->val;
+        }
+        ret += dfs(root->left,Pathmax_)+dfs(root->right,Pathmax_);
+        return ret;
+    }
+    int goodNodes(TreeNode* root) {
+        return dfs(root,INT_MIN);
+    }
+};
