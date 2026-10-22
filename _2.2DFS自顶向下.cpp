@@ -46,3 +46,64 @@ public:
         return dfs(root,0);
     }
 };
+
+https://leetcode.cn/problems/binary-tree-right-side-view/description/ // 二叉树右视图
+
+class Solution {
+public:
+    vector<int> ret;
+    vector<int> rightSideView(TreeNode* root) {
+        dfs(root,0);
+        return ret;
+    }
+    void dfs(TreeNode*root,int depth)
+    {
+        if(root==nullptr) return;
+        if(ret.size()==depth) ret.push_back(root->val);
+        dfs(root->right,depth+1);
+        dfs(root->left,depth+1);
+    }
+};
+
+https://leetcode.cn/problems/count-good-nodes-in-binary-tree/  // 二叉树中好节点个数
+
+class Solution {
+public:
+    int dfs(TreeNode*root,int Pathmax_)
+    {
+        if(root==nullptr) return 0;
+        int ret = 0;
+        if(root->val>=Pathmax_)
+        {
+            ret++;
+            Pathmax_ = root->val;
+        }
+        ret += dfs(root->left,Pathmax_)+dfs(root->right,Pathmax_);
+        return ret;
+    }
+    int goodNodes(TreeNode* root) {
+        return dfs(root,INT_MIN);
+    }
+};
+
+https://leetcode.cn/problems/sum-of-nodes-with-even-valued-grandparent/description/  祖父节点值为偶数的节点和
+
+class Solution {
+public:
+    int sumEvenGrandparent(TreeNode* root) {
+        return dfs(root,nullptr,nullptr);
+    }
+    int dfs(TreeNode*root,TreeNode*parent,TreeNode*grandparent)
+    {
+        if(root==nullptr) return 0;
+
+        int sum = 0;
+         // 如果祖父节点存在且值为偶数
+        if(grandparent&&grandparent->val%2==0)
+        {
+            sum+=root->val;
+        }
+        sum+=dfs(root->left,root,parent)+dfs(root->right,root,parent);
+        return sum;
+    }
+};
