@@ -107,3 +107,50 @@ public:
         return sum;
     }
 };
+
+https://leetcode.cn/problems/smallest-string-starting-from-leaf/description/  // 从叶子节点开始的最小字符串
+
+class Solution {
+public:
+    vector<string> path;
+    string smallestFromLeaf(TreeNode* root) {
+        dfs(root,"");
+        sort(path.begin(),path.end());
+        return path[0];
+    }
+    void dfs(TreeNode*root,string s)
+    {
+        if(root==nullptr) return ;
+        s+='a'+root->val;
+        if(root->left==nullptr&&root->right==nullptr)
+        {
+            reverse(s.begin(),s.end()); // 从叶子节点到根节点
+            path.push_back(s);
+            return;
+        }
+        dfs(root->left,s);
+        dfs(root->right,s);
+    }
+};
+
+https://leetcode.cn/problems/maximum-difference-between-node-and-ancestor/description/ // 节点与其祖先节点最大的差值
+
+class Solution {
+public:
+    int MaxDiffer = 0;
+    // 记录一条路径上的最大值和最小值
+    int maxAncestorDiff(TreeNode* root) {
+        int max = 0,min = INT_MAX/2;
+        dfs(root,max,min);
+        return MaxDiffer;
+    }
+    void dfs(TreeNode*root,int max,int min)
+    {
+        if(root==nullptr) return ;
+        if(root->val>max) max = root->val;
+        if(root->val<min) min = root->val;
+        MaxDiffer = MaxDiffer>(max-min)?MaxDiffer:(max-min);
+        dfs(root->left,max,min);
+        dfs(root->right,max,min);
+    }
+};
