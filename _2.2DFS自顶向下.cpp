@@ -154,3 +154,57 @@ public:
         dfs(root->right,max,min);
     }
 };
+
+https://leetcode.cn/problems/sum-of-root-to-leaf-binary-numbers/description/ // 从根节点到叶子节点的二进制数和
+
+class Solution {
+public:
+    int SUM = 0;
+
+    int sumRootToLeaf(TreeNode* root) {
+        SUM = 0;
+        dfs(root, 0);
+        return SUM;
+    }
+
+    void dfs(TreeNode* root, int num) {
+        if (root == nullptr) return;
+
+        // 将当前节点加入二进制数
+        num = num * 2 + root->val;
+
+        // 到达叶节点，累加结果
+        if (root->left == nullptr && root->right == nullptr) {
+            SUM += num;
+            return;
+        }
+
+        dfs(root->left, num);
+        dfs(root->right, num);
+    }
+};
+
+
+https://leetcode.cn/problems/add-one-row-to-tree/description/ // 在二叉树中添加一行
+
+class Solution {
+public:
+    TreeNode* addOneRow(TreeNode* root, int val, int depth) {
+        if(root==nullptr) return nullptr;
+        if(depth==1)
+        {
+            return new TreeNode(val,root,nullptr);
+        }
+        if(depth==2)
+        {
+            root->left = new TreeNode(val,root->left,nullptr);
+            root->right = new TreeNode(val,nullptr,root->right);
+        }
+        else
+        {
+            root->left = addOneRow(root->left,val,depth-1);
+            root->right = addOneRow(root->right,val,depth-1);
+        }
+        return root;
+    }
+};
