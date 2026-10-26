@@ -208,3 +208,92 @@ public:
         return root;
     }
 };
+
+https://leetcode.cn/problems/longest-zigzag-path-in-a-binary-tree/submissions/756202244/  // 二叉树最长交错路径
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ret = 0;
+    int longestZigZag(TreeNode* root) {
+        dfs(root,nullptr,0);
+        return ret;
+    }
+    void dfs(TreeNode*root,TreeNode*parent,int length)
+    {
+        if(root==nullptr) return;   
+        // 1.到达一个新的节点，更新结果
+        ret = max(length,ret);
+        // 2.如果parent为空，从root开始
+        if(parent==nullptr)
+        {
+            dfs(root->left,root,1);
+            dfs(root->right,root,1);
+        }
+        // 3.如果上一步是走左
+        else if(parent->left==root)
+        {
+            dfs(root->right,root,length+1); // 交叉路径 length+1
+            dfs(root->left,root,1); // 延续同方向，长度length置为1
+            
+        }
+        // 4. 如果上一步走右
+        else
+        {
+            dfs(root->left,root,length+1); //...
+            dfs(root->right,root,1); //...
+        }
+    }
+};
+
+https://leetcode.cn/problems/flip-binary-tree-to-match-preorder-traversal/description/  // 翻转二叉树以匹配先序遍历值
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> flipMatchVoyage(TreeNode* root, vector<int>& voyage) {
+        vector<int> ret;
+        int index = 0;
+        if(!dfs(root,voyage,ret,index)) return {-1};
+        return ret;
+    }
+    bool dfs(TreeNode*root,vector<int>&voyage,vector<int>&ret,int& index)
+    {
+        if(root==nullptr) return true ;
+        // 当前节点必须匹配先序遍历值
+        if(index>=voyage.size()||root->val!=voyage[index])
+        {
+            return false;
+        }
+        // 节点匹配 准备遍历下一个节点
+        index++;
+        // 如果下一个预期节点不是左孩子 尝试反转
+        if(root->left!=nullptr&&index<voyage.size()&&root->left->val!=voyage[index])
+        {
+            ret.push_back(root->val);
+            // 反转后：先访问右子树 在访问左子树
+            return dfs(root->right,voyage,ret,index)&&dfs(root->left,voyage,ret,index);
+        }    
+        return dfs(root->left,voyage,ret,index)&&dfs(root->right,voyage,ret,index);
+    }
+};
