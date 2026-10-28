@@ -64,3 +64,78 @@ bool isSameTree(struct TreeNode* p, struct TreeNode* q) {
     //结构相同，值也相同
    return isSameTree(p->left,q->left)&&isSameTree(p->right,q->right);
 }
+
+https://leetcode.cn/problems/balanced-binary-tree/description/  // 平衡二叉树
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int height(TreeNode*root)
+    {
+        if(root==nullptr) return 0;
+        else return max(height(root->left),height(root->right))+1;
+    }
+    bool isBalanced(TreeNode* root) {
+        if(root==nullptr) return true;
+        else return abs(height(root->left)-height(root->right))<=1 && isBalanced(root->left) && isBalanced(root->right);
+    }
+};
+
+https://leetcode.cn/problems/evaluate-boolean-binary-tree/description/  // 计算二叉树的布尔值
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool evaluateTree(TreeNode* root) {
+        if(root->left==nullptr) return root->val == 0?false:true;
+        bool left = evaluateTree(root->left);
+        bool right = evaluateTree(root->right);
+        return root->val==2?left|right:left&right;
+    }
+};
+
+https://leetcode.cn/problems/symmetric-tree/description/  // 对称的树
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool check(TreeNode*P,TreeNode*Q)
+    {
+        if(!P&&!Q) return true;
+        if(!P||!Q) return false;
+        return P->val == Q->val && check(P->left,Q->right) && check(P->right,Q->left);
+    }
+    bool isSymmetric(TreeNode* root) {
+        return check(root->left, root->right);
+    }
+};
