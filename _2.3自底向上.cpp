@@ -139,3 +139,112 @@ public:
         return check(root->left, root->right);
     }
 };
+
+https://leetcode.cn/problems/flip-equivalent-binary-trees/submissions/756734309/  // 翻转等价二叉树
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool flipEquiv(TreeNode* root1, TreeNode* root2) {
+        if(!root1&&!root2) return true;
+        if(!root1||!root2) return false;
+        if(root1->val!=root2->val) return false;
+        return flipEquiv(root1->left,root2->left)&&flipEquiv(root1->right,root2->right)||flipEquiv(root1->left,root2->right)&&flipEquiv(root1->right,root2->left);
+    }
+};
+
+https://leetcode.cn/problems/most-frequent-subtree-sum/description/  // 出现次数最多的子树元素和
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<int,int> count;
+    int Maxcount = 0;
+    vector<int> findFrequentTreeSum(TreeNode* root) {
+        count.clear();
+        Maxcount = 0;
+        dfs(root);
+
+        vector<int> ret;
+        for(auto&[num,frequency]:count)
+        {
+            if(frequency==Maxcount)
+            {
+                ret.push_back(num);
+            }
+        }
+        return ret;
+    }
+    int dfs(TreeNode*root)
+    {
+        if(root==nullptr) return 0;
+        int left = dfs(root->left);
+        int right = dfs(root->right);
+        int sum = root->val+left+right;
+
+        count[sum]++;
+        Maxcount = max(Maxcount,count[sum]);
+        return sum;
+    }
+};/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<int,int> count;
+    int Maxcount = 0;
+    vector<int> findFrequentTreeSum(TreeNode* root) {
+        count.clear();
+        Maxcount = 0;
+        dfs(root);
+
+        vector<int> ret;
+        for(auto&[num,frequency]:count)
+        {
+            if(frequency==Maxcount)
+            {
+                ret.push_back(num);
+            }
+        }
+        return ret;
+    }
+    int dfs(TreeNode*root)
+    {
+        if(root==nullptr) return 0;
+        int left = dfs(root->left);
+        int right = dfs(root->right);
+        int sum = root->val+left+right;
+
+        count[sum]++;
+        Maxcount = max(Maxcount,count[sum]);
+        return sum;
+    }
+};
