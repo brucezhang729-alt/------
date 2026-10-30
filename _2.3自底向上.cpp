@@ -206,7 +206,11 @@ public:
         Maxcount = max(Maxcount,count[sum]);
         return sum;
     }
-};/**
+};
+
+https://leetcode.cn/problems/binary-tree-tilt/description/  // 二叉树的坡度
+
+/**
  * Definition for a binary tree node.
  * struct TreeNode {
  *     int val;
@@ -219,32 +223,43 @@ public:
  */
 class Solution {
 public:
-    unordered_map<int,int> count;
-    int Maxcount = 0;
-    vector<int> findFrequentTreeSum(TreeNode* root) {
-        count.clear();
-        Maxcount = 0;
+    int sum = 0;
+    int findTilt(TreeNode* root) {
         dfs(root);
-
-        vector<int> ret;
-        for(auto&[num,frequency]:count)
-        {
-            if(frequency==Maxcount)
-            {
-                ret.push_back(num);
-            }
-        }
-        return ret;
+        return sum;
     }
     int dfs(TreeNode*root)
     {
         if(root==nullptr) return 0;
         int left = dfs(root->left);
         int right = dfs(root->right);
-        int sum = root->val+left+right;
-
-        count[sum]++;
-        Maxcount = max(Maxcount,count[sum]);
-        return sum;
+        sum += abs(left-right);
+        return left+right+root->val;
     }
 };
+
+
+https://leetcode.cn/problems/count-dominant-nodes-in-a-binary-tree/description/  // 统计二叉树中支配节点的个数
+
+class Solution {
+public:
+    int ret = 0;
+    int countDominantNodes(TreeNode* root) {
+        int maxval = 0;
+        dfs(root,maxval);
+        return  ret;     
+    }
+    int dfs(TreeNode*root,int val)
+    {
+        if(root==nullptr) return 0;
+        val = max(dfs(root->left,val),dfs(root->right,val));
+        if(root->val>=val)
+        {
+            ret++;
+            val = root->val;
+        }
+       return val;
+    }
+};
+
+
