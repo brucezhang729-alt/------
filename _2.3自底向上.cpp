@@ -262,4 +262,76 @@ public:
     }
 };
 
+https://leetcode.cn/problems/construct-string-from-binary-tree/description/  // 从二叉树创建字符串
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    string tree2str(TreeNode* root) {
+        if(!root) return "";
+        string ret = to_string(root->val);
+        if(root->left)
+        {
+            ret+="("+tree2str(root->left)+")";
+        }
+        else if(root->right)
+        {
+            ret+="()";
+        }
+        if(root->right)
+        {
+            ret+="("+tree2str(root->right)+")";
+        }
+        return ret;
+
+    }
+};
+
+https://leetcode.cn/problems/count-nodes-equal-to-average-of-subtree/description/  // 统计与子树平均值相等的节点数
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ret = 0;
+    int averageOfSubtree(TreeNode* root) {
+        dfs(root);
+        return ret;
+    }
+    pair<int,int> dfs(TreeNode*root)
+    {
+        if(root==nullptr) return {0,0};
+        // 计算左右子树
+        auto left = dfs(root->left);
+        auto right = dfs(root->right);
+         // 统计当前子树的总和与节点数量
+        int presum = left.first+right.first+root->val;
+        int precount = left.second+right.second+1;
+        int average = presum/precount;
+        // 更新
+        if(average==root->val) ret++;
+        // 返回当前子树和与节点个数
+        return {presum,precount};
+    }
+};
+
 
