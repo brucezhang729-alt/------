@@ -335,3 +335,57 @@ public:
 };
 
 
+https://leetcode.cn/problems/maximum-difference-between-node-and-ancestor/description/ // 节点与其祖先之间的最大差值
+
+class Solution {
+public:
+    int MaxDiffer = 0;
+    // 记录一条路径上的最大值和最小值
+    int maxAncestorDiff(TreeNode* root) {
+        int max = 0,min = INT_MAX/2;
+        dfs(root,max,min);
+        return MaxDiffer;
+    }
+    void dfs(TreeNode*root,int max,int min)
+    {
+        if(root==nullptr) return ;
+        if(root->val>max) max = root->val;
+        if(root->val<min) min = root->val;
+        MaxDiffer = MaxDiffer>(max-min)?MaxDiffer:(max-min);
+        dfs(root->left,max,min);
+        dfs(root->right,max,min);
+    }
+};
+
+https://leetcode.cn/problems/binary-tree-coloring-game/description/ // 二叉树着色游戏
+
+class Solution {
+public:
+    bool btreeGameWinningMove(TreeNode* root, int n, int x) {
+        // 先找到x所在的位置，定位为递归入口 然后找节点个数
+        TreeNode* cur = nullptr;
+        dfs1(root,x,cur);
+        int left = dfs(cur->left);
+        int right = dfs(cur->right);
+        int parent = n-left-right-1;
+        return max({left,right,parent})>n/2;
+    }
+    void dfs1(TreeNode*root,int x,TreeNode*&cur)
+    {
+        if(root==nullptr) return;
+        if(root->val==x)
+        {
+            cur = root;
+            return;
+        }
+        dfs1(root->left,x,cur);
+        dfs1(root->right,x,cur);
+    }
+    int dfs(TreeNode*root)
+    {
+        if(root==nullptr) return 0 ;
+        int left = dfs(root->left);
+        int right = dfs(root->right);
+        return left+right+1;
+    }
+};
